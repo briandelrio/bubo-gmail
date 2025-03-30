@@ -1,0 +1,94 @@
+/* Email Creation specific styles */
+
+.bubo-email-nav {
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-email-recipient {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+.bubo-email-counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-round);
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+.bubo-email-preview {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-email-subject {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-email-body {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.4;
+}
+
+.bubo-tone-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-email-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-email-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  font-size: 13px;
+  padding-bottom: var(--spacing-md);
+}
+
+.bubo-nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.bubo-nav-prev {
+  color: var(--color-text-tertiary);
+}
+
+.bubo-nav-next {
+  color: var(--color-accent);
+}
+
+.bubo-nav-counter {
+  color: var(--color-text-tertiary);
+}
+
+.bubo-accept-all {
+  text-align: center;
+  padding-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  margin-top: var(--spacing-md);
+}

@@ -1,0 +1,157 @@
+/* Followup Setup specific styles */
+
+.bubo-sequence-info {
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-sequence-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+.bubo-sequence-recipient {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-timeline {
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-timeline::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  background-color: var(--color-border);
+}
+
+.bubo-timeline-item {
+  position: relative;
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-timeline-marker {
+  position: absolute;
+  left: -32px;
+  top: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubo-timeline-initial {
+  background-color: var(--color-accent);
+}
+
+.bubo-timeline-followup {
+  width: 24px;
+  height: 24px;
+  left: -28px;
+  background-color: var(--color-content);
+  border: 2px solid var(--color-accent);
+}
+
+.bubo-timeline-content {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+}
+
+.bubo-timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bubo-timeline-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--color-text-primary);
+}
+
+.bubo-timeline-edit {
+  font-size: 12px;
+  color: var(--color-accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.bubo-timeline-date {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 2px;
+}
+
+.bubo-timeline-badge {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.bubo-recommended {
+  display: inline-flex;
+  padding: 2px 8px;
+  border-radius: var(--radius-round);
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+  font-size: 11px;
+}
+
+.bubo-add-followup {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-settings-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-setting-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-setting-label {
+  width: 112px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.bubo-setting-value {
+  flex: 1;
+  padding: 6px;
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--color-text-primary);
+}
+
+.bubo-global-settings {
+  margin-bottom: var(--spacing-md);
+}

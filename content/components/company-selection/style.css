@@ -1,0 +1,146 @@
+/* Company Selection specific styles */
+
+.bubo-search-container {
+  position: relative;
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-search-input {
+  width: 100%;
+  padding: 8px 16px 8px 32px;
+  border-radius: var(--radius-round);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-content);
+  font-size: 13px;
+  color: var(--color-text-primary);
+}
+
+.bubo-search-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent-light);
+}
+
+.bubo-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.bubo-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-results-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.bubo-results-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.bubo-action-btn {
+  font-size: 12px;
+  color: var(--color-accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.bubo-company-cards {
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-company-card {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+}
+
+.bubo-company-checkbox {
+  margin-right: var(--spacing-sm);
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-accent);
+}
+
+.bubo-company-info {
+  flex: 1;
+}
+
+.bubo-company-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+.bubo-company-details {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.bubo-company-add {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--color-accent);
+  background-color: var(--color-content);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.bubo-load-more {
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-load-more-btn {
+  color: var(--color-accent);
+  background: none;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.bubo-action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-selection-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.bubo-selection-count {
+  color: var(--color-text-secondary);
+}
+
+.bubo-selection-all {
+  color: var(--color-accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+}

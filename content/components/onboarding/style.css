@@ -1,0 +1,86 @@
+/* Onboarding specific styles */
+
+.bubo-centered-title {
+  text-align: center;
+  margin-bottom: var(--spacing-xs);
+}
+
+.bubo-centered-text {
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-connection-card {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
+}
+
+.bubo-connection-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-right: var(--spacing-md);
+}
+
+.bubo-connection-number.bubo-connected {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.bubo-connection-number.bubo-inactive {
+  background-color: #EAEAEA;
+  color: var(--color-text-tertiary);
+}
+
+.bubo-connection-info {
+  flex: 1;
+}
+
+.bubo-connection-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+.bubo-connection-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.bubo-connection-btn {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-accent);
+  background-color: var(--color-content);
+  color: var(--color-accent);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.bubo-connection-btn.bubo-connected-btn {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.bubo-connection-btn.bubo-inactive-btn {
+  border-color: var(--color-border);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+}
+
+.bubo-skip-container {
+  text-align: center;
+  margin-top: var(--spacing-md);
+}

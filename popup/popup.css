@@ -1,0 +1,132 @@
+/* Popup styles */
+:root {
+  --color-background: #F9F8F7;
+  --color-content: #FDFDFD;
+  --color-border: #E8E7E6;
+  --color-text-primary: #5C5C5B;
+  --color-text-secondary: #838382;
+  --color-text-tertiary: #A4A3A2;
+  --color-accent: #8E5ADF;
+  --color-accent-light: #F6F0FF;
+  --color-selected-bg: #ECE9F3;
+  --color-success: #4CAF50;
+  --color-error: #F44336;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+.popup-container {
+  width: 320px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.popup-branding {
+  display: flex;
+  align-items: baseline;
+}
+
+.popup-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.popup-tagline {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.popup-content {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.popup-message {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+}
+
+.popup-message p {
+  margin-bottom: 8px;
+}
+
+.popup-actions {
+  margin: 8px 0;
+}
+
+.popup-btn {
+  width: 100%;
+  padding: 10px 16px;
+  background-color: var(--color-content);
+  border: 1px solid var(--color-text-primary);
+  border-radius: 6px;
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.popup-btn:hover {
+  background-color: var(--color-background);
+}
+
+.popup-status {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.status-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.status-label {
+  color: var(--color-text-secondary);
+}
+
+.status-value {
+  color: var(--color-error);
+}
+
+.status-value.connected {
+  color: var(--color-success);
+}
+
+.popup-footer {
+  padding: 8px 16px;
+  border-top: 1px solid var(--color-border);
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  text-align: right;
+}

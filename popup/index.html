@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bubo for Gmail</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header class="popup-header">
+      <div class="popup-branding">
+        <h1 class="popup-title">Bubo</h1>
+        <span class="popup-tagline">Smart Outreach</span>
+      </div>
+    </header>
+    
+    <main class="popup-content">
+      <div class="popup-message">
+        <p>To use Bubo, open a new compose window in Gmail.</p>
+        <p>Click the Bubo button in the top-right corner of the compose window to start.</p>
+      </div>
+      
+      <div class="popup-actions">
+        <button id="open-gmail-btn" class="popup-btn">Open Gmail</button>
+      </div>
+      
+      <div class="popup-status">
+        <h2 class="status-title">API Connections</h2>
+        <div class="status-item">
+          <span class="status-label">Hunter.io:</span>
+          <span id="hunter-status" class="status-value">Not Connected</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">Gmail API:</span>
+          <span id="gmail-status" class="status-value">Not Connected</span>
+        </div>
+      </div>
+    </main>
+    
+    <footer class="popup-footer">
+      <span class="popup-version">v1.0.0</span>
+    </footer>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

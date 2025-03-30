@@ -1,0 +1,131 @@
+/* Dashboard specific styles */
+.bubo-metrics {
+  margin-bottom: var(--spacing-lg);
+}
+
+.bubo-stat-cards {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-stat-card {
+  flex: 1;
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubo-stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.bubo-stat-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.bubo-btn-full {
+  width: 100%;
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-activity {
+  margin-top: var(--spacing-lg);
+}
+
+.bubo-empty-state {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.bubo-campaign-card {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-campaign-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-campaign-name {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-size: 14px;
+}
+
+.bubo-campaign-date {
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+}
+
+.bubo-campaign-stats {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.bubo-campaign-stats .bubo-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.bubo-campaign-stats .bubo-stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.bubo-campaign-stats .bubo-stat-label {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+.bubo-brand {
+  display: flex;
+  align-items: center;
+}
+
+.bubo-logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.bubo-tagline {
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.bubo-close {
+  border: none;
+  background: none;
+  font-size: 24px;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
