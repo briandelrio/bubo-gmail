@@ -1,0 +1,111 @@
+/* Follow-up Editor Styles */
+.bubo-followup-editor {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: auto;
+  max-height: 90vh;
+  z-index: 10000;
+  box-shadow: var(--shadow-md);
+}
+
+.bubo-followup-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* Timing controls */
+.bubo-timing-controls {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.bubo-timing-group {
+  flex: 1;
+}
+
+/* Checkbox styles */
+.bubo-checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-checkbox {
+  margin-right: var(--spacing-xs);
+}
+
+.bubo-checkbox-label {
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.bubo-conditions-container {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+/* Reusing most styles from email-editor */
+.bubo-editor {
+  min-height: 200px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-content);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+}
+
+.bubo-editor:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent-light);
+}
+
+.bubo-toolbar {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xs);
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-xs);
+}
+
+.bubo-toolbar-btn {
+  background: none;
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  border-radius: var(--radius-sm);
+}
+
+.bubo-toolbar-btn:hover {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.bubo-toolbar-divider {
+  height: 16px;
+  width: 1px;
+  background-color: var(--color-border);
+  margin: 0 var(--spacing-xs);
+}
+
+.bubo-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}

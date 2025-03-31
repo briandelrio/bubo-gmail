@@ -1,0 +1,428 @@
+/* Campaign Detail Styles */
+.bubo-campaign-detail {
+  width: 700px; /* Wider than standard 400px */
+}
+
+.bubo-campaign-name {
+  margin-left: var(--spacing-sm);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+/* Tab styles */
+.bubo-tab-content {
+  margin-top: var(--spacing-md);
+}
+
+.bubo-tab-panel {
+  display: none;
+}
+
+.bubo-tab-panel-active {
+  display: block;
+}
+
+/* Status container */
+.bubo-status-container {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-status-badge {
+  padding: 4px 10px;
+  border-radius: var(--radius-round);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.bubo-status-active {
+  background-color: #E7F5E9;
+  color: #2E7D32;
+}
+
+.bubo-status-paused {
+  background-color: #FFF8E1;
+  color: #F57C00;
+}
+
+.bubo-status-complete {
+  background-color: #E3F2FD;
+  color: #1976D2;
+}
+
+.bubo-status-cancelled {
+  background-color: #FFEBEE;
+  color: #C62828;
+}
+
+.bubo-status-controls {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+/* Metrics */
+.bubo-metrics-container {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+.bubo-metric-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-background);
+}
+
+.bubo-metric-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.bubo-metric-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.bubo-metric-rate {
+  font-size: 11px;
+  color: var(--color-accent);
+  margin-top: 2px;
+}
+
+/* Timeline */
+.bubo-timeline-container {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-timeline {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md) 0;
+}
+
+.bubo-timeline-node {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.bubo-timeline-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 16px;
+}
+
+.bubo-timeline-node-sent .bubo-timeline-icon {
+  background-color: #E7F5E9;
+}
+
+.bubo-timeline-node-scheduled .bubo-timeline-icon {
+  background-color: #FFF8E1;
+}
+
+.bubo-timeline-node-pending .bubo-timeline-icon {
+  background-color: #ECEFF1;
+}
+
+.bubo-timeline-content {
+  flex: 1;
+}
+
+.bubo-timeline-title {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.bubo-timeline-date {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.bubo-timeline-connector {
+  width: 2px;
+  height: 20px;
+  background-color: var(--color-border);
+  margin-left: 16px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+/* Activity */
+.bubo-activity-container {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-activity-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.bubo-activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.bubo-activity-item:last-child {
+  border-bottom: none;
+}
+
+.bubo-activity-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.bubo-activity-content {
+  flex: 1;
+}
+
+.bubo-activity-message {
+  font-size: 13px;
+  color: var(--color-text-primary);
+}
+
+.bubo-activity-time {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+/* Contacts tab */
+.bubo-contacts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-contacts-actions {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.bubo-search-container {
+  position: relative;
+}
+
+.bubo-search-input {
+  padding-left: 30px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16'%3E%3Cpath fill='%23838382' d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 8px center;
+}
+
+.bubo-contacts-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md);
+}
+
+.bubo-contact-card {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bubo-contact-name {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.bubo-contact-info {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.bubo-contact-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+.bubo-status-pending { color: var(--color-text-tertiary); }
+.bubo-status-sent { color: #1976D2; }
+.bubo-status-opened { color: #F57C00; }
+.bubo-status-replied { color: #2E7D32; }
+.bubo-status-bounced { color: #C62828; }
+
+.bubo-contact-actions {
+  align-self: flex-end;
+}
+
+.bubo-btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.bubo-btn-icon:hover {
+  background-color: var(--color-accent-light);
+}
+
+/* Emails tab */
+.bubo-email-sequence {
+  display: flex;
+  flex-direction: column;
+}
+
+.bubo-email-card {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-email-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+.bubo-email-title {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.bubo-email-timing {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.bubo-email-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.bubo-email-subject {
+  font-size: 13px;
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.bubo-email-body-preview {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  max-height: 60px;
+  overflow: hidden;
+}
+
+.bubo-email-connector {
+  width: 2px;
+  height: 20px;
+  background-color: var(--color-border);
+  margin: 0 auto var(--spacing-sm) auto;
+}
+
+.bubo-add-followup-btn {
+  align-self: center;
+  margin-top: var(--spacing-xs);
+}
+
+/* Settings tab */
+.bubo-settings-group {
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.bubo-setting-row {
+  display: flex;
+  margin-bottom: var(--spacing-md);
+  align-items: center;
+}
+
+.bubo-setting-row:last-child {
+  margin-bottom: 0;
+}
+
+.bubo-setting-row .bubo-label {
+  flex: 0 0 150px;
+  margin-bottom: 0;
+}
+
+.bubo-setting-value {
+  flex: 1;
+}
+
+.bubo-settings-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.bubo-btn-danger {
+  color: #C62828;
+  border-color: #C62828;
+}
+
+.bubo-btn-danger:hover {
+  background-color: #FFEBEE;
+}
+
+/* Empty state */
+.bubo-empty-state {
+  padding: var(--spacing-md);
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: 13px;
+  background-color: var(--color-background);
+  border-radius: var(--radius-md);
+}

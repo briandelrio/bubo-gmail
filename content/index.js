@@ -36,6 +36,7 @@ function loadCSS(href) {
 const componentData = {
   data: {
     currentScreen: 'dashboard',
+    previousScreen: null,
     apiStatus: {
       hunterConnected: false,
       gmailConnected: false
@@ -60,8 +61,13 @@ const componentData = {
     ],
     selectedContacts: [],
     emails: [],
+    emailTemplates: [],
+    currentEmail: null,
     followups: [],
-    activeCampaigns: []
+    followupTemplates: [],
+    currentFollowup: null,
+    activeCampaigns: [],
+    currentCampaign: null
   },
   
   listeners: {},
@@ -91,7 +97,10 @@ const componentData = {
   },
   
   goToScreen(screen) {
-    this.setState({ currentScreen: screen });
+    this.setState({ 
+      previousScreen: this.data.currentScreen,
+      currentScreen: screen 
+    });
   },
   
   toggleCompanySelection(id) {
@@ -228,7 +237,57 @@ function toggleBuboContainer() {
     buboContainer.id = 'bubo-container';
     document.body.appendChild(buboContainer);
     
-    // Initialize UI
+    // Initialize UI with sample data for new components
+    componentData.setState({
+      // Initialize with mock data for the new components
+      emails: [
+        {
+          id: 'email-1',
+          subject: 'Introduction: Partnership Opportunity',
+          body: '<p>Hi {{firstName}},</p><p>I hope this email finds you well. I wanted to reach out and introduce myself. I work with companies in your industry to help them improve their outreach and lead generation.</p><p>Would you be open to a quick call to discuss how we might be able to help {{company}}?</p><p>Best regards,<br>[Your Name]</p>'
+        }
+      ],
+      followups: [
+        {
+          id: 'followup-1',
+          days: 3,
+          time: 'morning',
+          stopIfReplied: true,
+          stopIfOpened: false,
+          subject: 'Following up: Partnership Opportunity',
+          body: '<p>Hi {{firstName}},</p><p>I wanted to follow up on my previous email about helping {{company}} with outreach and lead generation. I understand you might be busy, so I thought I would check in again.</p><p>Would you have 15 minutes for a quick call this week?</p><p>Best regards,<br>[Your Name]</p>'
+        }
+      ],
+      activeCampaigns: [
+        {
+          id: 'campaign-1',
+          name: 'Berlin Gym Equipment Outreach',
+          status: 'active',
+          created: '2025-01-15',
+          contacts: 3,
+          companies: 2,
+          date: new Date().toLocaleDateString(),
+          opens: 2,
+          replies: 1,
+          metrics: {
+            delivered: 3,
+            opened: 2,
+            replied: 1,
+            clicked: 1
+          },
+          emails: [],
+          followups: [],
+          activity: [
+            { 
+              type: 'sent', 
+              message: 'Campaign launched successfully', 
+              timestamp: new Date().toLocaleString() 
+            }
+          ]
+        }
+      ]
+    });
+    
     componentData.goToScreen('dashboard');
     renderCurrentScreen();
     
@@ -514,9 +573,41 @@ function attachFollowupSetupBehaviors(container) {
   
   // Edit buttons for followups
   const editButtons = container.querySelectorAll('.bubo-timeline-edit');
-  editButtons.forEach(button => {
+  editButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
-      alert('Follow-up editing will be available in a future version');
+      // Sample followup data
+      const followupData = [
+        {
+          id: 'followup-1',
+          days: 3,
+          time: 'morning',
+          stopIfReplied: true,
+          stopIfOpened: false,
+          subject: 'Following up: Partnership Opportunity',
+          body: '<p>Hi {{firstName}},</p><p>I wanted to follow up on my previous email about helping {{company}} with outreach and lead generation. I understand you might be busy, so I thought I would check in again.</p><p>Would you have 15 minutes for a quick call this week?</p><p>Best regards,<br>[Your Name]</p>'
+        },
+        {
+          id: 'followup-2',
+          days: 7,
+          time: 'afternoon',
+          stopIfReplied: true,
+          stopIfOpened: true,
+          subject: 'Last follow-up: Partnership Opportunity',
+          body: '<p>Hi {{firstName}},</p><p>I\'m reaching out one final time regarding our potential partnership. If you\'re interested in learning how we can help {{company}} improve your outreach strategy, please let me know.</p><p>I respect your time and won\'t follow up further if I don\'t hear back.</p><p>Best regards,<br>[Your Name]</p>'
+        }
+      ];
+      
+      // Get the appropriate followup based on button index
+      const followup = followupData[index] || followupData[0];
+      
+      // Store the followup in state for editing
+      componentData.setState({ 
+        currentFollowup: followup,
+        previousScreen: 'followups'
+      });
+      
+      // Navigate to followup editor
+      componentData.goToScreen('followup-editor');
     });
   });
 }
@@ -798,7 +889,37 @@ function attachDashboardBehaviors(container) {
   const viewCampaignsBtn = container.querySelector('#bubo-view-campaigns');
   if (viewCampaignsBtn) {
     viewCampaignsBtn.addEventListener('click', () => {
-      alert('Campaign management screen will be available in a future version');
+      // In the future, this would go to a campaign management screen
+      // For now, if we have a campaign, go to its details
+      const state = componentData.getState();
+      if (state.activeCampaigns && state.activeCampaigns.length > 0) {
+        componentData.setState({ 
+          currentCampaign: state.activeCampaigns[0]
+        });
+        componentData.goToScreen('campaign-detail');
+      } else {
+        alert('No active campaigns. Create a campaign first.');
+      }
+    });
+  }
+  
+  // Add click handlers for campaign cards
+  const campaignCards = container.querySelectorAll('.bubo-campaign-card');
+  if (campaignCards.length) {
+    campaignCards.forEach((card, index) => {
+      card.addEventListener('click', () => {
+        const state = componentData.getState();
+        if (state.activeCampaigns && state.activeCampaigns.length > index) {
+          // Set the selected campaign and navigate to detail view
+          componentData.setState({ 
+            currentCampaign: state.activeCampaigns[index]
+          });
+          componentData.goToScreen('campaign-detail');
+        }
+      });
+      
+      // Add cursor pointer to make it clear these are clickable
+      card.style.cursor = 'pointer';
     });
   }
 }
@@ -1485,7 +1606,29 @@ function attachEmailCreationBehaviors(container) {
   const editBtn = container.querySelector('#edit-btn');
   if (editBtn) {
     editBtn.addEventListener('click', () => {
-      alert('Email editing will be available in a future version');
+      // Set up current email for editing
+      const state = componentData.getState();
+      const selectedContacts = state.contacts.filter(contact => contact.selected);
+      const currentContact = selectedContacts[0] || { name: 'No Contact Selected', company: 'Unknown' };
+      
+      // Create a sample email if none exists
+      const email = {
+        id: 'email-' + Date.now(),
+        subject: `Premium Gym Equipment for ${currentContact.company}`,
+        body: `<p>Dear ${currentContact.name.split(' ')[0]},</p>
+               <p>I noticed that ${currentContact.company} has been expanding its premium fitness studios across the city, and I wanted to introduce our latest line of commercial-grade gym equipment.</p>
+               <p>Would you be open to a brief conversation about how our equipment could enhance your members' experience?</p>
+               <p>Best regards,<br>[Your Name]</p>`
+      };
+      
+      // Store the email in state
+      componentData.setState({ 
+        currentEmail: email,
+        previousScreen: 'emails'
+      });
+      
+      // Navigate to email editor
+      componentData.goToScreen('email-editor');
     });
   }
   
@@ -1566,6 +1709,19 @@ function renderCurrentScreen() {
     case 'send':
       renderedContainer = renderCampaignLaunch(state);
       break;
+    // New screens for the enhanced modules
+    case 'email-editor':
+      // Instead of dynamic imports, render an inline editor
+      renderedContainer = renderEmailEditor(state);
+      break;
+    case 'followup-editor':
+      // Render inline followup editor
+      renderedContainer = renderFollowupEditor(state);
+      break;
+    case 'campaign-detail':
+      // Render inline campaign detail view
+      renderedContainer = renderCampaignDetail(state);
+      break;
     default:
       // For all other screens, show a placeholder
       renderedContainer = document.createElement('div');
@@ -1612,6 +1768,707 @@ function renderCurrentScreen() {
   positionNextToGmailCompose(buboContainer, activeComposeWindow);
 }
 
+// Render email editor component inline
+function renderEmailEditor(state) {
+  const container = document.createElement('div');
+  container.className = 'bubo-module bubo-email-editor';
+  
+  // Load email editor CSS
+  loadCSS('content/components/email-editor/style.css');
+  
+  // Header
+  const header = document.createElement('div');
+  header.className = 'bubo-header';
+  header.innerHTML = `
+    <div class="bubo-brand">
+      <span class="bubo-logo">Edit Email</span>
+    </div>
+    <button id="bubo-email-editor-close" class="bubo-close">×</button>
+  `;
+  
+  // Content
+  const content = document.createElement('div');
+  content.className = 'bubo-content';
+  
+  // Email form
+  const emailForm = document.createElement('div');
+  emailForm.className = 'bubo-email-form';
+  
+  // Subject line
+  const subjectContainer = document.createElement('div');
+  subjectContainer.className = 'bubo-subject-container';
+  subjectContainer.innerHTML = `
+    <label for="bubo-subject" class="bubo-label">Subject Line</label>
+    <input type="text" id="bubo-subject" class="bubo-input" value="${state.currentEmail?.subject || ''}" placeholder="Enter email subject...">
+  `;
+  
+  // Formatting toolbar
+  const toolbar = document.createElement('div');
+  toolbar.className = 'bubo-toolbar';
+  toolbar.innerHTML = `
+    <button class="bubo-toolbar-btn" data-format="bold"><strong>B</strong></button>
+    <button class="bubo-toolbar-btn" data-format="italic"><em>I</em></button>
+    <button class="bubo-toolbar-btn" data-format="underline"><u>U</u></button>
+    <span class="bubo-toolbar-divider"></span>
+    <button class="bubo-toolbar-btn" data-format="insertUnorderedList">• List</button>
+    <button class="bubo-toolbar-btn" data-format="insertOrderedList">1. List</button>
+    <span class="bubo-toolbar-divider"></span>
+    <button class="bubo-toolbar-btn" data-format="createLink">Link</button>
+    <span class="bubo-toolbar-divider"></span>
+    <select id="bubo-personalization" class="bubo-select">
+      <option value="">Insert personalization...</option>
+      <option value="{{firstName}}">First Name</option>
+      <option value="{{company}}">Company</option>
+      <option value="{{title}}">Job Title</option>
+    </select>
+  `;
+  
+  // Email body
+  const bodyContainer = document.createElement('div');
+  bodyContainer.className = 'bubo-body-container';
+  bodyContainer.innerHTML = `
+    <label for="bubo-body" class="bubo-label">Email Body</label>
+    <div id="bubo-body" class="bubo-editor" contenteditable="true">${state.currentEmail?.body || ''}</div>
+  `;
+  
+  // Template management
+  const templateContainer = document.createElement('div');
+  templateContainer.className = 'bubo-template-container';
+  templateContainer.innerHTML = `
+    <div class="bubo-template-controls">
+      <select id="bubo-templates" class="bubo-select">
+        <option value="">Load template...</option>
+        <option value="template1">Introduction Email</option>
+        <option value="template2">Follow-up Template</option>
+        <option value="template3">Meeting Request</option>
+      </select>
+      <button id="bubo-save-template" class="bubo-btn bubo-btn-secondary">Save as Template</button>
+    </div>
+  `;
+  
+  // Action buttons
+  const actions = document.createElement('div');
+  actions.className = 'bubo-actions';
+  actions.innerHTML = `
+    <button id="bubo-email-cancel" class="bubo-btn bubo-btn-secondary">Cancel</button>
+    <button id="bubo-email-save" class="bubo-btn bubo-btn-accent">Save Changes</button>
+  `;
+  
+  // Assemble the email editor
+  emailForm.appendChild(subjectContainer);
+  emailForm.appendChild(toolbar);
+  emailForm.appendChild(bodyContainer);
+  emailForm.appendChild(templateContainer);
+  emailForm.appendChild(actions);
+  
+  content.appendChild(emailForm);
+  container.appendChild(header);
+  container.appendChild(content);
+  
+  // Attach behaviors
+  setTimeout(() => {
+    attachEmailEditorBehaviors(container, state);
+  }, 0);
+  
+  return container;
+}
+
+// Email editor behaviors
+function attachEmailEditorBehaviors(container, state) {
+  // Close button
+  const closeBtn = container.querySelector('#bubo-email-editor-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      // Return to previous screen, typically email-creation
+      if (state.previousScreen) {
+        componentData.goToScreen(state.previousScreen);
+      } else {
+        componentData.goToScreen('emails');
+      }
+    });
+  }
+  
+  // Cancel button
+  const cancelBtn = container.querySelector('#bubo-email-cancel');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      // Prompt user if there are unsaved changes
+      const confirmed = confirm('Discard changes to this email?');
+      if (confirmed) {
+        // Return to previous screen without saving
+        if (state.previousScreen) {
+          componentData.goToScreen(state.previousScreen);
+        } else {
+          componentData.goToScreen('emails');
+        }
+      }
+    });
+  }
+  
+  // Save button
+  const saveBtn = container.querySelector('#bubo-email-save');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      const subject = container.querySelector('#bubo-subject').value;
+      const body = container.querySelector('#bubo-body').innerHTML;
+      
+      // Save updated email content to state
+      if (state.currentEmail) {
+        const updatedEmail = {
+          ...state.currentEmail,
+          subject,
+          body
+        };
+        
+        // Update the email in the emails array
+        const updatedEmails = state.emails.map(email => {
+          if (email.id === updatedEmail.id) {
+            return updatedEmail;
+          }
+          return email;
+        });
+        
+        componentData.setState({
+          emails: updatedEmails,
+          currentEmail: null
+        });
+      }
+      
+      // Return to previous screen
+      if (state.previousScreen) {
+        componentData.goToScreen(state.previousScreen);
+      } else {
+        componentData.goToScreen('emails');
+      }
+    });
+  }
+  
+  // Format buttons
+  const formatBtns = container.querySelectorAll('.bubo-toolbar-btn');
+  if (formatBtns.length) {
+    formatBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const format = btn.getAttribute('data-format');
+        
+        if (format === 'createLink') {
+          const url = prompt('Enter URL:');
+          if (url) {
+            document.execCommand('createLink', false, url);
+          }
+        } else {
+          document.execCommand(format, false, null);
+        }
+        
+        // Focus back on editor
+        const editor = container.querySelector('#bubo-body');
+        if (editor) {
+          editor.focus();
+        }
+      });
+    });
+  }
+  
+  // Personalization dropdown
+  const personalizationSelect = container.querySelector('#bubo-personalization');
+  if (personalizationSelect) {
+    personalizationSelect.addEventListener('change', () => {
+      const token = personalizationSelect.value;
+      if (token) {
+        document.execCommand('insertText', false, token);
+        personalizationSelect.value = '';
+        
+        // Focus back on editor
+        const editor = container.querySelector('#bubo-body');
+        if (editor) {
+          editor.focus();
+        }
+      }
+    });
+  }
+  
+  // Template loading
+  const templateSelect = container.querySelector('#bubo-templates');
+  if (templateSelect) {
+    templateSelect.addEventListener('change', () => {
+      const templateId = templateSelect.value;
+      if (templateId) {
+        // In a real implementation, we would load template content from storage
+        // For now, we'll use hardcoded examples
+        const templates = {
+          template1: {
+            subject: 'Introduction: {{firstName}} from {{company}}',
+            body: 'Hi {{firstName}},<br><br>I hope this email finds you well. I wanted to reach out and introduce myself. I work with companies in your industry to help them improve their outreach and lead generation.<br><br>Would you be open to a quick call to discuss how we might be able to help {{company}}?<br><br>Best regards,<br>[Your Name]'
+          },
+          template2: {
+            subject: 'Following up: {{company}} opportunity',
+            body: 'Hi {{firstName}},<br><br>I wanted to follow up on my previous email about helping {{company}} with outreach and lead generation. I understand you might be busy, so I thought I would check in again.<br><br>Would you have 15 minutes for a quick call this week?<br><br>Best regards,<br>[Your Name]'
+          },
+          template3: {
+            subject: 'Meeting request: {{firstName}} + [Your Name]',
+            body: 'Hi {{firstName}},<br><br>I would like to schedule a meeting to discuss how we can help {{company}} improve your outreach strategy. Would any of the following times work for you?<br><br>- Tuesday at 10:00 AM<br>- Wednesday at 2:00 PM<br>- Thursday at 11:00 AM<br><br>Looking forward to speaking with you.<br><br>Best regards,<br>[Your Name]'
+          }
+        };
+        
+        const template = templates[templateId];
+        if (template) {
+          container.querySelector('#bubo-subject').value = template.subject;
+          container.querySelector('#bubo-body').innerHTML = template.body;
+        }
+        
+        // Reset select
+        templateSelect.value = '';
+      }
+    });
+  }
+  
+  // Save as template button
+  const saveTemplateBtn = container.querySelector('#bubo-save-template');
+  if (saveTemplateBtn) {
+    saveTemplateBtn.addEventListener('click', () => {
+      const subject = container.querySelector('#bubo-subject').value;
+      const body = container.querySelector('#bubo-body').innerHTML;
+      
+      // In a real implementation, we would save to storage
+      // For prototype, just show confirmation
+      if (subject && body) {
+        const templateName = prompt('Enter a name for this template:');
+        if (templateName) {
+          // Simulate saving the template
+          alert(`Template "${templateName}" saved successfully.`);
+        }
+      } else {
+        alert('Please add content before saving as template.');
+      }
+    });
+  }
+}
+
+// Render followup editor component inline
+function renderFollowupEditor(state) {
+  const container = document.createElement('div');
+  container.className = 'bubo-module bubo-followup-editor';
+  
+  // Load followup editor CSS
+  loadCSS('content/components/followup-editor/style.css');
+  
+  // Header
+  const header = document.createElement('div');
+  header.className = 'bubo-header';
+  header.innerHTML = `
+    <div class="bubo-brand">
+      <span class="bubo-logo">Edit Follow-up</span>
+    </div>
+    <button id="bubo-followup-editor-close" class="bubo-close">×</button>
+  `;
+  
+  // Content
+  const content = document.createElement('div');
+  content.className = 'bubo-content';
+  
+  // Follow-up form
+  const followupForm = document.createElement('div');
+  followupForm.className = 'bubo-followup-form';
+  
+  // Timing settings
+  const timingContainer = document.createElement('div');
+  timingContainer.className = 'bubo-timing-container';
+  timingContainer.innerHTML = `
+    <h3 class="bubo-subtitle">Timing</h3>
+    <div class="bubo-timing-controls">
+      <div class="bubo-timing-group">
+        <label for="bubo-days" class="bubo-label">Days After Previous Email</label>
+        <input type="number" id="bubo-days" class="bubo-input" min="1" max="30" value="${state.currentFollowup?.days || 3}" />
+      </div>
+      <div class="bubo-timing-group">
+        <label for="bubo-time" class="bubo-label">Time</label>
+        <select id="bubo-time" class="bubo-select">
+          <option value="morning" ${state.currentFollowup?.time === 'morning' ? 'selected' : ''}>Morning (9 AM)</option>
+          <option value="midday" ${state.currentFollowup?.time === 'midday' ? 'selected' : ''}>Midday (12 PM)</option>
+          <option value="afternoon" ${state.currentFollowup?.time === 'afternoon' ? 'selected' : ''}>Afternoon (3 PM)</option>
+        </select>
+      </div>
+    </div>
+  `;
+  
+  // Conditions
+  const conditionsContainer = document.createElement('div');
+  conditionsContainer.className = 'bubo-conditions-container';
+  conditionsContainer.innerHTML = `
+    <h3 class="bubo-subtitle">Conditions</h3>
+    <div class="bubo-condition-options">
+      <div class="bubo-checkbox-group">
+        <input type="checkbox" id="bubo-condition-replied" class="bubo-checkbox" ${state.currentFollowup?.stopIfReplied ? 'checked' : ''} />
+        <label for="bubo-condition-replied" class="bubo-checkbox-label">Stop sequence if recipient replied</label>
+      </div>
+      <div class="bubo-checkbox-group">
+        <input type="checkbox" id="bubo-condition-opened" class="bubo-checkbox" ${state.currentFollowup?.stopIfOpened ? 'checked' : ''} />
+        <label for="bubo-condition-opened" class="bubo-checkbox-label">Stop sequence if recipient opened the email</label>
+      </div>
+    </div>
+  `;
+  
+  // Email subject
+  const subjectContainer = document.createElement('div');
+  subjectContainer.className = 'bubo-subject-container';
+  subjectContainer.innerHTML = `
+    <h3 class="bubo-subtitle">Email Content</h3>
+    <label for="bubo-subject" class="bubo-label">Subject Line</label>
+    <input type="text" id="bubo-subject" class="bubo-input" value="${state.currentFollowup?.subject || ''}" placeholder="Enter follow-up subject...">
+  `;
+  
+  // Formatting toolbar
+  const toolbar = document.createElement('div');
+  toolbar.className = 'bubo-toolbar';
+  toolbar.innerHTML = `
+    <button class="bubo-toolbar-btn" data-format="bold"><strong>B</strong></button>
+    <button class="bubo-toolbar-btn" data-format="italic"><em>I</em></button>
+    <button class="bubo-toolbar-btn" data-format="underline"><u>U</u></button>
+    <span class="bubo-toolbar-divider"></span>
+    <button class="bubo-toolbar-btn" data-format="insertUnorderedList">• List</button>
+    <button class="bubo-toolbar-btn" data-format="insertOrderedList">1. List</button>
+    <span class="bubo-toolbar-divider"></span>
+    <button class="bubo-toolbar-btn" data-format="createLink">Link</button>
+    <span class="bubo-toolbar-divider"></span>
+    <select id="bubo-personalization" class="bubo-select">
+      <option value="">Insert personalization...</option>
+      <option value="{{firstName}}">First Name</option>
+      <option value="{{company}}">Company</option>
+      <option value="{{title}}">Job Title</option>
+    </select>
+  `;
+  
+  // Email body
+  const bodyContainer = document.createElement('div');
+  bodyContainer.className = 'bubo-body-container';
+  bodyContainer.innerHTML = `
+    <label for="bubo-body" class="bubo-label">Email Body</label>
+    <div id="bubo-body" class="bubo-editor" contenteditable="true">${state.currentFollowup?.body || ''}</div>
+  `;
+  
+  // Action buttons
+  const actions = document.createElement('div');
+  actions.className = 'bubo-actions';
+  actions.innerHTML = `
+    <button id="bubo-followup-cancel" class="bubo-btn bubo-btn-secondary">Cancel</button>
+    <button id="bubo-followup-save" class="bubo-btn bubo-btn-accent">Save Changes</button>
+  `;
+  
+  // Assemble the followup editor
+  followupForm.appendChild(timingContainer);
+  followupForm.appendChild(conditionsContainer);
+  followupForm.appendChild(subjectContainer);
+  followupForm.appendChild(toolbar);
+  followupForm.appendChild(bodyContainer);
+  followupForm.appendChild(actions);
+  
+  content.appendChild(followupForm);
+  container.appendChild(header);
+  container.appendChild(content);
+  
+  // Attach behaviors
+  setTimeout(() => {
+    attachFollowupEditorBehaviors(container, state);
+  }, 0);
+  
+  return container;
+}
+
+// Followup editor behaviors
+function attachFollowupEditorBehaviors(container, state) {
+  // Close button
+  const closeBtn = container.querySelector('#bubo-followup-editor-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      // Return to previous screen, typically followup-setup
+      if (state.previousScreen) {
+        componentData.goToScreen(state.previousScreen);
+      } else {
+        componentData.goToScreen('followups');
+      }
+    });
+  }
+  
+  // Cancel button
+  const cancelBtn = container.querySelector('#bubo-followup-cancel');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      // Prompt user if there are unsaved changes
+      const confirmed = confirm('Discard changes to this follow-up?');
+      if (confirmed) {
+        // Return to previous screen without saving
+        if (state.previousScreen) {
+          componentData.goToScreen(state.previousScreen);
+        } else {
+          componentData.goToScreen('followups');
+        }
+      }
+    });
+  }
+  
+  // Save button
+  const saveBtn = container.querySelector('#bubo-followup-save');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      const days = parseInt(container.querySelector('#bubo-days').value, 10);
+      const time = container.querySelector('#bubo-time').value;
+      const stopIfReplied = container.querySelector('#bubo-condition-replied').checked;
+      const stopIfOpened = container.querySelector('#bubo-condition-opened').checked;
+      const subject = container.querySelector('#bubo-subject').value;
+      const body = container.querySelector('#bubo-body').innerHTML;
+      
+      // Validate inputs
+      if (!days || days < 1) {
+        alert('Please enter a valid number of days (minimum 1)');
+        return;
+      }
+      
+      if (!subject) {
+        alert('Please enter a subject line');
+        return;
+      }
+      
+      if (!body) {
+        alert('Please enter email content');
+        return;
+      }
+      
+      // Save updated followup content to state
+      if (state.currentFollowup) {
+        const updatedFollowup = {
+          ...state.currentFollowup,
+          days,
+          time,
+          stopIfReplied,
+          stopIfOpened,
+          subject,
+          body
+        };
+        
+        // Update the followup in the followups array
+        const updatedFollowups = state.followups.map(followup => {
+          if (followup.id === updatedFollowup.id) {
+            return updatedFollowup;
+          }
+          return followup;
+        });
+        
+        componentData.setState({
+          followups: updatedFollowups,
+          currentFollowup: null
+        });
+      }
+      
+      // Return to previous screen
+      if (state.previousScreen) {
+        componentData.goToScreen(state.previousScreen);
+      } else {
+        componentData.goToScreen('followups');
+      }
+    });
+  }
+  
+  // Format buttons
+  const formatBtns = container.querySelectorAll('.bubo-toolbar-btn');
+  if (formatBtns.length) {
+    formatBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const format = btn.getAttribute('data-format');
+        
+        if (format === 'createLink') {
+          const url = prompt('Enter URL:');
+          if (url) {
+            document.execCommand('createLink', false, url);
+          }
+        } else {
+          document.execCommand(format, false, null);
+        }
+        
+        // Focus back on editor
+        const editor = container.querySelector('#bubo-body');
+        if (editor) {
+          editor.focus();
+        }
+      });
+    });
+  }
+  
+  // Personalization dropdown
+  const personalizationSelect = container.querySelector('#bubo-personalization');
+  if (personalizationSelect) {
+    personalizationSelect.addEventListener('change', () => {
+      const token = personalizationSelect.value;
+      if (token) {
+        document.execCommand('insertText', false, token);
+        personalizationSelect.value = '';
+        
+        // Focus back on editor
+        const editor = container.querySelector('#bubo-body');
+        if (editor) {
+          editor.focus();
+        }
+      }
+    });
+  }
+  
+  // Days input validation
+  const daysInput = container.querySelector('#bubo-days');
+  if (daysInput) {
+    daysInput.addEventListener('input', () => {
+      const value = parseInt(daysInput.value, 10);
+      if (value < 1) {
+        daysInput.value = 1;
+      } else if (value > 30) {
+        daysInput.value = 30;
+      }
+    });
+  }
+}
+
+// Render campaign detail component inline
+function renderCampaignDetail(state) {
+  const container = document.createElement('div');
+  container.className = 'bubo-module bubo-campaign-detail';
+  
+  // Load campaign detail CSS
+  loadCSS('content/components/campaign-detail/style.css');
+  
+  // Get current campaign
+  const campaign = state.currentCampaign || {};
+  
+  // Header
+  const header = document.createElement('div');
+  header.className = 'bubo-header';
+  header.innerHTML = `
+    <div class="bubo-brand">
+      <span class="bubo-logo">Campaign Details</span>
+      <span class="bubo-campaign-name">${campaign.name || 'Unnamed Campaign'}</span>
+    </div>
+    <button id="bubo-campaign-detail-close" class="bubo-close">×</button>
+  `;
+  
+  // Content
+  const content = document.createElement('div');
+  content.className = 'bubo-content';
+  
+  // Simple campaign overview for demo
+  content.innerHTML = `
+    <div class="bubo-campaign-header">
+      <h2 class="bubo-campaign-title">${campaign.name || 'Campaign Details'}</h2>
+      <div class="bubo-campaign-status bubo-status-${campaign.status || 'active'}">
+        ${campaign.status || 'Active'}
+      </div>
+    </div>
+    
+    <div class="bubo-metrics-grid">
+      <div class="bubo-metric-card">
+        <span class="bubo-metric-value">${campaign.metrics?.delivered || campaign.contacts || 0}</span>
+        <span class="bubo-metric-label">Delivered</span>
+      </div>
+      <div class="bubo-metric-card">
+        <span class="bubo-metric-value">${campaign.metrics?.opened || campaign.opens || 0}</span>
+        <span class="bubo-metric-label">Opened</span>
+      </div>
+      <div class="bubo-metric-card">
+        <span class="bubo-metric-value">${campaign.metrics?.replied || campaign.replies || 0}</span>
+        <span class="bubo-metric-label">Replied</span>
+      </div>
+    </div>
+    
+    <div class="bubo-campaign-dates">
+      <div class="bubo-date-item">
+        <span class="bubo-date-label">Created:</span>
+        <span class="bubo-date-value">${campaign.created || campaign.date || new Date().toLocaleDateString()}</span>
+      </div>
+    </div>
+    
+    <div class="bubo-campaign-actions">
+      <button id="bubo-pause-campaign" class="bubo-btn bubo-btn-secondary">
+        ${campaign.status === 'paused' ? 'Resume Campaign' : 'Pause Campaign'}
+      </button>
+      <button id="bubo-back-dashboard" class="bubo-btn bubo-btn-primary">Back to Dashboard</button>
+    </div>
+  `;
+  
+  // Assemble container
+  container.appendChild(header);
+  container.appendChild(content);
+  
+  // Attach behaviors
+  setTimeout(() => {
+    attachCampaignDetailBehaviors(container, state);
+  }, 0);
+  
+  return container;
+}
+
+// Campaign detail behaviors
+function attachCampaignDetailBehaviors(container, state) {
+  // Close button
+  const closeBtn = container.querySelector('#bubo-campaign-detail-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      componentData.setState({ currentCampaign: null });
+      componentData.goToScreen('dashboard');
+    });
+  }
+  
+  // Back to dashboard button
+  const backBtn = container.querySelector('#bubo-back-dashboard');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      componentData.setState({ currentCampaign: null });
+      componentData.goToScreen('dashboard');
+    });
+  }
+  
+  // Pause/Resume campaign button
+  const pauseBtn = container.querySelector('#bubo-pause-campaign');
+  if (pauseBtn) {
+    pauseBtn.addEventListener('click', () => {
+      const campaign = state.currentCampaign;
+      if (!campaign) return;
+      
+      // Toggle status
+      const newStatus = campaign.status === 'paused' ? 'active' : 'paused';
+      const statusMessage = newStatus === 'paused' ? 'Campaign paused' : 'Campaign resumed';
+      
+      // Add status change to activity
+      const updatedActivity = [
+        {
+          type: 'status',
+          message: statusMessage,
+          timestamp: new Date().toLocaleString()
+        },
+        ...(campaign.activity || [])
+      ];
+      
+      // Update the campaign
+      const updatedCampaign = {
+        ...campaign,
+        status: newStatus,
+        activity: updatedActivity
+      };
+      
+      // Update campaigns array
+      const updatedCampaigns = state.activeCampaigns.map(c => {
+        if (c.id === campaign.id) {
+          return updatedCampaign;
+        }
+        return c;
+      });
+      
+      // Update state
+      componentData.setState({
+        activeCampaigns: updatedCampaigns,
+        currentCampaign: updatedCampaign
+      });
+      
+      // Refresh UI
+      componentData.goToScreen('campaign-detail');
+    });
+  }
+}
+
 // Initialize the extension
 async function initialize() {
   try {
@@ -1636,3 +2493,58 @@ if (document.readyState === 'loading') {
 } else {
   initialize();
 }
+
+// Add test message listener for development
+window.addEventListener('message', (event) => {
+  try {
+    if (event.data && event.data.type === 'BUBO_TEST') {
+      console.log('Received test message:', event.data);
+      
+      // Create bubo container if it doesn't exist
+      if (!buboContainer) {
+        buboContainer = document.createElement('div');
+        buboContainer.id = 'bubo-container';
+        document.body.appendChild(buboContainer);
+      }
+      
+      // Set test data
+      if (event.data.data) {
+        componentData.setState(event.data.data);
+      }
+      
+      // Go to specified screen
+      if (event.data.screen) {
+        componentData.goToScreen(event.data.screen);
+      }
+      
+      // Ensure container is visible
+      buboContainer.style.display = 'block';
+      
+      // Position container (if there's a compose window)
+      const composeWindow = document.querySelector('div.nH.Hd[role="dialog"]');
+      if (composeWindow) {
+        positionNextToGmailCompose(buboContainer, composeWindow);
+      } else {
+        // If no compose window, center on screen
+        buboContainer.style.position = 'fixed';
+        buboContainer.style.top = '50%';
+        buboContainer.style.left = '50%';
+        buboContainer.style.transform = 'translate(-50%, -50%)';
+      }
+      
+      // Send response back
+      window.postMessage({
+        type: 'BUBO_RESPONSE',
+        success: true,
+        screen: event.data.screen
+      }, '*');
+    }
+  } catch (error) {
+    console.error('Error handling test message:', error);
+    window.postMessage({
+      type: 'BUBO_RESPONSE',
+      success: false,
+      error: error.message
+    }, '*');
+  }
+});

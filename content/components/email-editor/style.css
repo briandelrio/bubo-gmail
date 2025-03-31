@@ -1,0 +1,116 @@
+/* Email Editor Styles */
+.bubo-email-editor {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: auto;
+  max-height: 90vh;
+  z-index: 10000;
+  box-shadow: var(--shadow-md);
+}
+
+.bubo-email-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.bubo-label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.bubo-editor {
+  min-height: 250px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-content);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+}
+
+.bubo-editor:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent-light);
+}
+
+.bubo-toolbar {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xs);
+  background-color: var(--color-content);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-xs);
+}
+
+.bubo-toolbar-btn {
+  background: none;
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  border-radius: var(--radius-sm);
+}
+
+.bubo-toolbar-btn:hover {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.bubo-toolbar-divider {
+  height: 16px;
+  width: 1px;
+  background-color: var(--color-border);
+  margin: 0 var(--spacing-xs);
+}
+
+.bubo-select {
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--color-text-primary);
+  background-color: var(--color-content);
+}
+
+.bubo-select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent-light);
+}
+
+.bubo-template-container {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.bubo-template-controls {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.bubo-template-controls .bubo-select {
+  flex: 1;
+}
+
+.bubo-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}

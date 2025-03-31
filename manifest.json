@@ -10,7 +10,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://mail.google.com/*"],
+      "matches": ["https://mail.google.com/*", "file://*/*test.html"],
       "js": ["content/index.js"],
       "css": ["content/styles/base.css"],
       "run_at": "document_idle"
@@ -22,9 +22,10 @@
         "content/core/*.js",
         "content/components/*/*.js",
         "content/components/*/*.css",
-        "content/styles/*.css"
+        "content/styles/*.css",
+        "test.html"
       ],
-      "matches": ["https://mail.google.com/*"]
+      "matches": ["https://mail.google.com/*", "http://localhost/*"]
     }
   ],
   "icons": {

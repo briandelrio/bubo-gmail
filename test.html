@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bubo Gmail Extension Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    .compose-window {
+      width: 500px;
+      height: 400px;
+      border: 1px solid #ccc;
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      background: white;
+      padding: 10px;
+    }
+    .compose-window::before {
+      content: 'Gmail Compose Window (Simulated)';
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bubo Gmail Extension Test</h1>
+  <p>This page simulates the Gmail interface for testing the Bubo extension functionality.</p>
+  
+  <div>
+    <button id="create-compose">Create Compose Window</button>
+    <button id="remove-compose">Remove Compose Window</button>
+  </div>
+  
+  <div>
+    <h3>Test Screens:</h3>
+    <button id="test-dashboard">Dashboard</button>
+    <button id="test-email-editor">Email Editor</button>
+    <button id="test-followup-editor">Followup Editor</button>
+    <button id="test-campaign-detail">Campaign Detail</button>
+  </div>
+  
+  <div id="compose-container">
+    <!-- Compose window will be added here -->
+  </div>
+  
+  <script>
+    // Simulated Gmail environment
+    let composeWindow = null;
+    
+    // Create compose window
+    document.getElementById('create-compose').addEventListener('click', () => {
+      if (!composeWindow) {
+        composeWindow = document.createElement('div');
+        composeWindow.className = 'compose-window';
+        composeWindow.setAttribute('role', 'dialog');
+        composeWindow.className = 'nH Hd';
+        composeWindow.innerHTML = `
+          <div>To: </div>
+          <div>Subject: </div>
+          <div style="height: 300px; border: 1px solid #eee; margin-top: 10px;"></div>
+        `;
+        document.getElementById('compose-container').appendChild(composeWindow);
+        
+        // Trigger mutation for extension to detect
+        const dummyEl = document.createElement('span');
+        document.body.appendChild(dummyEl);
+        setTimeout(() => dummyEl.remove(), 100);
+      }
+    });
+    
+    // Remove compose window
+    document.getElementById('remove-compose').addEventListener('click', () => {
+      if (composeWindow) {
+        composeWindow.remove();
+        composeWindow = null;
+        
+        // Trigger mutation for extension to detect
+        const dummyEl = document.createElement('span');
+        document.body.appendChild(dummyEl);
+        setTimeout(() => dummyEl.remove(), 100);
+      }
+    });
+    
+    // Test screens
+    document.getElementById('test-dashboard').addEventListener('click', () => {
+      window.postMessage({
+        type: 'BUBO_TEST',
+        screen: 'dashboard'
+      }, '*');
+    });
+    
+    document.getElementById('test-email-editor').addEventListener('click', () => {
+      window.postMessage({
+        type: 'BUBO_TEST',
+        screen: 'email-editor',
+        data: {
+          currentEmail: {
+            id: 'test-email',
+            subject: 'Test Subject',
+            body: '<p>This is a test email body</p>'
+          }
+        }
+      }, '*');
+    });
+    
+    document.getElementById('test-followup-editor').addEventListener('click', () => {
+      window.postMessage({
+        type: 'BUBO_TEST',
+        screen: 'followup-editor',
+        data: {
+          currentFollowup: {
+            id: 'test-followup',
+            days: 3,
+            time: 'morning',
+            stopIfReplied: true,
+            stopIfOpened: false,
+            subject: 'Test Followup Subject',
+            body: '<p>This is a test followup body</p>'
+          }
+        }
+      }, '*');
+    });
+    
+    document.getElementById('test-campaign-detail').addEventListener('click', () => {
+      window.postMessage({
+        type: 'BUBO_TEST',
+        screen: 'campaign-detail',
+        data: {
+          currentCampaign: {
+            id: 'test-campaign',
+            name: 'Test Campaign',
+            status: 'active',
+            created: '2025-03-30',
+            contacts: 5,
+            companies: 2,
+            metrics: {
+              delivered: 5,
+              opened: 3,
+              replied: 1,
+              clicked: 2
+            }
+          }
+        }
+      }, '*');
+    });
+    
+    // Listen for extension messages
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'BUBO_RESPONSE') {
+        console.log('Extension response:', event.data);
+      }
+    });
+  </script>
+</body>
+</html>
