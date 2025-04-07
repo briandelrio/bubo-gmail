@@ -1,13 +1,8 @@
 /* Email Editor Styles */
 .bubo-email-editor {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
+  width: 400px; /* Match standard module width */
   height: auto;
-  max-height: 90vh;
-  z-index: 10000;
+  max-height: 80vh;
   box-shadow: var(--shadow-md);
 }
 
@@ -26,8 +21,8 @@
 }
 
 .bubo-editor {
-  min-height: 250px;
-  max-height: 400px;
+  min-height: 200px;
+  max-height: 300px;
   overflow-y: auto;
   padding: var(--spacing-md);
   border: 1px solid var(--color-border);
@@ -100,8 +95,8 @@
 
 .bubo-template-controls {
   display: flex;
-  gap: var(--spacing-md);
-  align-items: center;
+  flex-direction: column;
+  gap: var(--spacing-sm);
 }
 
 .bubo-template-controls .bubo-select {

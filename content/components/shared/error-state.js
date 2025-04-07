@@ -1,206 +1,115 @@
-// Error states for Bubo
+// Error state component for Bubo Extension
 
-// Create an error message element
-export function createErrorElement(message, details = null, retryCallback = null) {
+/**
+ * Create an error state component
+ * @param {string} message - Error message to display
+ * @param {Function} retryAction - Optional function to call when retry button is clicked
+ * @returns {HTMLElement} The error state container
+ */
+export function createErrorState(message = 'Something went wrong', retryAction = null) {
   const container = document.createElement('div');
-  container.className = 'bubo-error';
+  container.className = 'bubo-error-state';
   
   const icon = document.createElement('div');
   icon.className = 'bubo-error-icon';
-  icon.innerHTML = '⚠️';
-  
-  const content = document.createElement('div');
-  content.className = 'bubo-error-content';
-  
-  const title = document.createElement('div');
-  title.className = 'bubo-error-title';
-  title.textContent = message;
-  
-  content.appendChild(title);
-  
-  if (details) {
-    const detailsElement = document.createElement('div');
-    detailsElement.className = 'bubo-error-details';
-    detailsElement.textContent = details;
-    content.appendChild(detailsElement);
-  }
-  
-  const actions = document.createElement('div');
-  actions.className = 'bubo-error-actions';
-  
-  if (retryCallback) {
-    const retryButton = document.createElement('button');
-    retryButton.className = 'bubo-btn bubo-btn-secondary';
-    retryButton.textContent = 'Retry';
-    retryButton.addEventListener('click', retryCallback);
-    actions.appendChild(retryButton);
-  }
-  
-  container.appendChild(icon);
-  container.appendChild(content);
-  container.appendChild(actions);
-  
-  // Add inline styles for the error
-  const style = document.createElement('style');
-  style.textContent = `
-    .bubo-error {
-      display: flex;
-      align-items: flex-start;
-      padding: var(--spacing-md);
-      background-color: #FFEBEE;
-      border: 1px solid #FFCDD2;
-      border-radius: var(--radius-md);
-      margin-bottom: var(--spacing-md);
-    }
-    
-    .bubo-error-icon {
-      font-size: 24px;
-      margin-right: var(--spacing-md);
-      line-height: 1;
-    }
-    
-    .bubo-error-content {
-      flex: 1;
-    }
-    
-    .bubo-error-title {
-      font-weight: 500;
-      color: #C62828;
-      margin-bottom: var(--spacing-xs);
-      font-size: 14px;
-    }
-    
-    .bubo-error-details {
-      color: var(--color-text-secondary);
-      font-size: 12px;
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    .bubo-error-actions {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: var(--spacing-sm);
-    }
+  icon.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
   `;
   
-  container.appendChild(style);
+  const messageElement = document.createElement('p');
+  messageElement.className = 'bubo-error-message';
+  messageElement.textContent = message;
+  
+  container.appendChild(icon);
+  container.appendChild(messageElement);
+  
+  // Add retry button if retry function is provided
+  if (typeof retryAction === 'function') {
+    const retryButton = document.createElement('button');
+    retryButton.className = 'bubo-btn bubo-btn-secondary bubo-retry-btn';
+    retryButton.textContent = 'Try Again';
+    retryButton.addEventListener('click', retryAction);
+    
+    container.appendChild(retryButton);
+  }
+  
+  // Add necessary CSS if not already added
+  addErrorStateStyles();
   
   return container;
 }
 
-// Show a validation error under a form field
-export function showFieldError(inputElement, errorMessage) {
-  // Remove any existing error message
-  const existingError = inputElement.parentNode.querySelector('.bubo-field-error');
-  if (existingError) {
-    existingError.parentNode.removeChild(existingError);
-  }
+/**
+ * Replace content with error state
+ * @param {HTMLElement} container - Container to replace content
+ * @param {string} message - Error message to display
+ * @param {Function} retryAction - Optional function to call when retry button is clicked
+ * @returns {Function} Function to restore original content
+ */
+export function showErrorState(container, message = 'Something went wrong', retryAction = null) {
+  if (!container) return () => {};
   
-  // Add error class to input
-  inputElement.classList.add('bubo-input-error');
+  // Store original content
+  const originalContent = container.innerHTML;
   
-  // Create and add error message
-  const errorElement = document.createElement('div');
-  errorElement.className = 'bubo-field-error';
-  errorElement.textContent = errorMessage;
-  errorElement.style.cssText = `
-    color: #C62828;
-    font-size: 12px;
-    margin-top: 4px;
-    margin-bottom: 8px;
-  `;
+  // Clear container
+  container.innerHTML = '';
   
-  // Insert after the input
-  inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
+  // Add error state
+  const errorState = createErrorState(message, retryAction);
+  container.appendChild(errorState);
   
-  // Return a function to clear the error
-  return () => {
-    inputElement.classList.remove('bubo-input-error');
-    const error = inputElement.parentNode.querySelector('.bubo-field-error');
-    if (error) {
-      error.parentNode.removeChild(error);
-    }
+  // Return function to restore original content
+  return function restoreContent() {
+    container.innerHTML = originalContent;
   };
 }
 
-// Show an API error message
-export function createApiErrorElement(error, retryCallback = null) {
-  let errorMessage = 'An error occurred while connecting to the API.';
-  let errorDetails = null;
-  
-  // Parse error to get meaningful message
-  if (typeof error === 'string') {
-    errorMessage = error;
-  } else if (error && error.message) {
-    errorMessage = error.message;
-    
-    if (error.response) {
-      // Handle HTTP errors with response details
-      errorDetails = `Status: ${error.response.status}`;
-      if (error.response.data && error.response.data.message) {
-        errorDetails += ` - ${error.response.data.message}`;
-      }
-    }
+/**
+ * Add error state CSS styles if not already added
+ */
+function addErrorStateStyles() {
+  // Check if styles already exist
+  if (document.getElementById('bubo-error-styles')) {
+    return;
   }
   
-  return createErrorElement(errorMessage, errorDetails, retryCallback);
-}
-
-// Empty state with optional action
-export function createEmptyStateElement(message, actionButtonText = null, actionCallback = null) {
-  const container = document.createElement('div');
-  container.className = 'bubo-empty-state';
-  
-  const icon = document.createElement('div');
-  icon.className = 'bubo-empty-icon';
-  icon.innerHTML = '📭';
-  
-  const textElement = document.createElement('div');
-  textElement.className = 'bubo-empty-text';
-  textElement.textContent = message;
-  
-  container.appendChild(icon);
-  container.appendChild(textElement);
-  
-  if (actionButtonText && actionCallback) {
-    const actionButton = document.createElement('button');
-    actionButton.className = 'bubo-btn bubo-btn-secondary bubo-empty-action';
-    actionButton.textContent = actionButtonText;
-    actionButton.addEventListener('click', actionCallback);
-    container.appendChild(actionButton);
-  }
-  
-  // Add inline styles
+  // Create style element
   const style = document.createElement('style');
+  style.id = 'bubo-error-styles';
+  
+  // Add CSS rules
   style.textContent = `
-    .bubo-empty-state {
+    .bubo-error-state {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: var(--spacing-lg);
-      background-color: var(--color-background);
-      border-radius: var(--radius-md);
+      padding: 24px;
       text-align: center;
     }
     
-    .bubo-empty-icon {
-      font-size: 32px;
-      margin-bottom: var(--spacing-md);
+    .bubo-error-icon {
+      color: #F44336;
+      margin-bottom: 12px;
     }
     
-    .bubo-empty-text {
-      color: var(--color-text-secondary);
+    .bubo-error-message {
+      margin: 0 0 16px 0;
+      color: var(--color-text-primary, #5C5C5B);
       font-size: 14px;
-      margin-bottom: var(--spacing-md);
     }
     
-    .bubo-empty-action {
-      margin-top: var(--spacing-sm);
+    .bubo-retry-btn {
+      padding: 8px 16px;
+      font-size: 14px;
     }
   `;
   
-  container.appendChild(style);
-  
-  return container;
+  // Add styles to document
+  document.head.appendChild(style);
 }

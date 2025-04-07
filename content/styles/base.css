@@ -32,7 +32,7 @@
 
 /* Base styles */
 .bubo-module {
-  width: 400px;
+
   background-color: var(--color-background);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);

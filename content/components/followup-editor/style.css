@@ -1,13 +1,8 @@
 /* Follow-up Editor Styles */
 .bubo-followup-editor {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
+  width: 400px; /* Match standard module width */
   height: auto;
-  max-height: 90vh;
-  z-index: 10000;
+  max-height: 80vh;
   box-shadow: var(--shadow-md);
 }
 
