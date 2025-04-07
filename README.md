@@ -88,4 +88,4 @@ To test the extension:
 - API integration for real data fetching
 - Enhanced email analytics
 - A/B testing for email campaigns
-- Integration with CRM systems
+- Integration with CRM systems# bubo-gmail-main
